@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    
+</head>
+<body>
+    <div th:replace="fragments/topbar :: common_topbar"></div>
+    <div class="container-fluid">
+    <div class="row">
+       <div class="col-md-3 col-lg-2 px-0 bg-dark text-white vh-100" th:replace="fragments/sidebar :: common_sidebar"></div>
+        <div class="col-md-9 col-lg-10">
+        <h3>
+            <span th:if="${editMode}">Modifica nota</span>
+            <span th:unless="${editMode}">Aggiungi nota</span>
+            per il ticket: <strong th:text="${nuovaNota.ticket.titolo}">Titolo Ticket</strong>
+        </h3>
+
+        <form th:object="${nuovaNota}"th:action="${editMode} ? @{/note/edit/{id}(id=${nuovaNota.id})} : @{/note/create}" method="post">
+
+            <!-- Ticket ID da passare come parametro in creazione (Il ticketId viene inviato tramite <input type="hidden" name="ticketId" ...> solo nel caso di creazione.)-->
+            <input type="hidden" name="ticketId" th:value="${nuovaNota.ticket.id}" />
+
+            <!-- Data (opzionale) -->
+            <div class="mb-3">
+                <label for="dataCreazione" class="form-label">Data</label>
+                <input type="date" id="dataCreazione" th:field="*{dataCreazione}" class="form-control"
+                       th:errorclass="is-invalid" />
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('dataCreazione')}"
+                     th:errors="*{dataCreazione}"></div>
+            </div>
+
+            <!-- Testo nota -->
+            <div class="mb-3">
+                <label for="testo" class="form-label">Testo</label>
+                <textarea id="testo" th:field="*{testo}" class="form-control"
+                          th:errorclass="is-invalid" rows="4" placeholder="Scrivi la nota..."></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('testo')}"
+                     th:errors="*{testo}"></div>
+            </div>
+
+            <!-- Pulsante submit -->
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Salva nota</button>
+                <a th:href="@{/ticket/show_id/{id}(id=${nuovaNota.ticket.id})}" class="btn btn-secondary">Annulla</a>
+            </div>
+        </form>
+    </div>
+    </div>
+    </div>
+</body>
+</html>

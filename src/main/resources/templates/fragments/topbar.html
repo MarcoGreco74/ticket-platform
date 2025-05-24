@@ -1,0 +1,45 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+</head>
+<body>
+<div th:fragment="common_topbar">
+    <nav class="navbar" th:style="'background-color: #6a7789;'">
+    <div class="container-fluid">
+    <div class="col-3 d-flex flex-row"> 
+      <a href="/logout" type="button" class="btn btn-outline-light">Logout</a>
+      <small class="text-light mx-2" th:text="Ciao "></small><small class="text-light" sec:authentication="name"></small>
+      <small class="text-light" sec:authentication="principal.authorities"></small>
+    </div>
+    <form th:action="@{/ticket}" method="get" class="d-flex" role="search" th:object="${user}">
+      <input name="keyword" th:value="${keyword}" class="form-control me-2 bg-dark text-white" type="search" placeholder="Search ticket" aria-label="Search" />
+      <button class="btn btn-outline-light" type="submit">Search</button>
+    </form>
+    <div class="col d-flex p-3" sec:authorize="hasAuthority('ADMIN')">
+        <button><a class="list-group-item list-group-item-action" th:href="@{/ticket/creaTicket}">Crea un ticket</a></button>
+    </div>
+    <div class="form-check form-switch" sec:authorize="hasAuthority('OPERATORE')">
+    <form th:action="@{/user/operatoreDisponibilita}" method="post" th:object="${user}">
+      <input type="hidden" name="id" th:field="*{id}" />
+      <input class="form-check-input" type="checkbox" name="disponibile" th:checked="${user.disponibile}" th:field="*{disponibile}" onchange="this.form.submit()" />
+      <label class="form-check-label" for="disponibile">
+        Stato: <strong th:text="${user.disponibile} ? 'Disponibile' : 'Non disponibile'"></strong>
+      </label>
+    </form>
+    </div>
+    </div>
+  </nav>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

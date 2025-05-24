@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+</head>
+<body>
+    <div th:replace="fragments/topbar :: common_topbar"></div>
+    <div class="container-fluid">
+    <div class="row">
+       <div class="col-md-3 col-lg-2 px-0 bg-dark text-white vh-100" th:replace="fragments/sidebar :: common_sidebar"></div>
+        <div class="col-md-9 col-lg-10">
+          <form id="crea_ticket" th:object="${nuovoTicket}" th:action="@{/ticket/creaTicket}" method="post" >
+              <ul>
+                  <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+              </ul>
+              <div class="row">
+                  <div class="col">
+                    <input type="text" id="titolo" th:field="*{titolo}" class="form-control" placeholder="Titolo" aria-label="titolo">
+                  </div>
+                  <div class="col">
+                    <input type="text" id="descrizione" th:field="*{descrizione}" class="form-control" placeholder="Descrizione" aria-label="descrizione">
+                  </div>
+                  <div class="col">
+                    <input type="text" id="stato" th:field="*{stato}" class="form-control" placeholder="Stato" aria-label="stato">
+                  </div>
+                  <div class="col">
+                    <input type="date" id="dataCreazione" th:field="*{dataCreazione}" class="form-control" placeholder="Data creazione" aria-label="dataCreazione">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <select th:field="*{operatore.id}">
+                  <option th:each="op : ${operatori}"th:value="${op.id}" th:text="${op.username}">Operatore</option>
+                </select>
+                <select th:field="*{categoria.id}" class="form-select" required>
+                  <option disabled selected value="">-- Seleziona Categoria --</option>
+                  <option th:each="cat : ${categorie}" th:value="${cat.id}" th:text="${cat.nome}"></option>
+                </select>
+
+                  <button class="btn btn-outline-success" type="submit">Save</button>
+                  <a class="btn btn-outline-dark" th:href="@{/ticket}">Annulla</a>
+                </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

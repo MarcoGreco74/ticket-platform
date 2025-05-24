@@ -1,0 +1,41 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+</head>
+<body>
+<div class="col-md-3 col-lg-2 px-0 bg-dark text-white vh-100" th:fragment="common_sidebar">
+    <div class="d-flex flex-column p-3 h-100">
+        <div class="mb-3">
+            <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="bi bi-backspace"></i></button>
+            <button type="button" class="btn btn-secondary" onclick="history.forward()"><i class="bi bi-backspace-reverse"></i></button>
+        </div>
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <svg class="bi pe-none me-2" width="40" height="32" aria-hidden="true"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">Ticket Platform</span>
+        </a>
+     <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a th:href="@{|/ticket|}" class="nav-link active">Home</a>
+            </li>
+            <li><a th:href="@{/ticket}" class="nav-link text-white">Dashboard</a></li>
+            <li><a th:href="@{/operatori}" class="nav-link text-white" sec:authorize="hasAuthority('ADMIN')">Operatori</a></li>
+            <li><a href="#" class="nav-link text-white">Tickets</a></li>
+            <li><a th:href="@{/categorie}" class="nav-link text-white">Categorie</a></li>
+        </ul>
+    <hr>
+    <div class="dropdown mt-auto" sec:authorize="hasAuthority('ADMIN')">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2"> <strong>mdo</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+    </div>
+  </div>
+</div>
+</body>

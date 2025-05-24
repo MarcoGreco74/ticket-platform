@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+</head>
+<body>
+<div th:replace="fragments/topbar :: common_topbar"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div th:replace="fragments/sidebar :: common_sidebar"></div>
+        <div class="col-md-9 col-lg-10">
+            <div class="p-3">
+                <div th:if="${list.isEmpty()}">
+                    <h4>La lista è vuota</h4>
+                </div>
+                <div th:unless="${list.isEmpty()}">
+                    <th:block th:if="${successMessage != null}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <span th:text="${successMessage}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </th:block>
+                    <th:block th:if="${errorMessage != null}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <span th:text="${errorMessage}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </th:block>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Titolo</th>
+                                <th>Descrizione</th>
+                                <th>Stato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''OPERATORE'')')}">
+                            <tr th:each="tckt : ${list}">
+                                <td th:text="${tckt.titolo}"></td>
+                                <td th:text="${tckt.descrizione.replace('_', ', ')}"></td>
+                                <td th:text="${tckt.stato}"></td>
+                                <td><a th:href="@{|/ticket/show_id/${tckt.id}|}" class="list-group-item list-group-item-action"><i class="bi bi-search"></i>Apri ticket</a></td>
+                            </tr>
+                            </th:block>
+                            <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                                <tr th:each="tckt : ${list}">
+                                    <td th:text="${tckt.titolo}"></td>
+                                <td th:text="${tckt.descrizione.replace('_', ', ')}"></td>
+                                <td th:text="${tckt.stato}"></td>
+                                <td><a th:href="@{|/ticket/show_id/${tckt.id}|}" class="list-group-item list-group-item-action"><i class="bi bi-search"></i>Apri ticket</a></td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

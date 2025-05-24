@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title>register</title>
+</head>
+<body>
+<main class="form-signin w-100 m-auto">
+  <div class="d-flex justify-content-center">
+  <form th:action="@{/register}" th:object="${user}" method="POST" enctype="utf8">
+    <h1 class="h3 mb-3 fw-normal">Register in Platform</h1>
+    <div class="form-floating py-2">
+      <input type="text" name="username"  id="username" th:field="*{username}" class="form-control" placeholder="Username">
+      <label for="username">Username</label>
+    </div>
+    <div class="form-floating py-2">
+      <input type="password" name="password" id="password" th:field="*{password}" class="form-control" placeholder="Password">
+      <label for="password">Password</label>
+    </div>
+    <div class="form-floating py-2">
+      <input type="email" name="email" id="email" th:field="*{email}" class="form-control" placeholder="Email">
+      <label for="email">Email</label>
+    </div>
+    <div class="form-floating py-2">
+      <select th:field="*{role}" class="form-control">
+        <option value="" selected disabled>Seleziona un ruolo</option>
+        <option th:each="ruolo : ${role}" th:value="${ruolo.nome}" th:text="${ruolo.nome}"></option>
+      </select>        
+    </div>
+    <div class="form-floating py-2">
+      <button class="btn btn-outline-success" type="submit">Save</button>
+      <a class="btn btn-outline-dark" th:href="@{/}">Annulla</a>
+    </div>
+    <div class="form-floating py-2">
+      <a th:href="@{/ticket}" class="btn btn-outline-success">Vai al login</a>
+    </div>
+</form>
+<div th:if="${errorMessage}">
+  <div th:text="${errorMessage}"></div>
+</div>
+</div>
+</main>
+<div th:replace="fragments/head :: bootstrapScript"></div>
+</body>
+</html>

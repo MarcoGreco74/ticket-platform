@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<div th:replace="fragments/topbar :: common_topbar"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 col-lg-2 px-0 bg-dark text-white vh-100" th:replace="fragments/sidebar :: common_sidebar"></div>
+      <div class="col-md-9 col-lg-10">
+        <h2>Modifica Ticket</h2>
+        <form th:object="${modificaticket}" th:action="@{'/ticket/edit/' + ${modificaticket.id}}" method="post">
+        <input type="hidden" th:field="*{admin.id}" />
+            <div class="mb-3">
+                <label for="admin" class="form-label">Admin</label>
+                <input type="text" th:field="*{admin.username}" class="form-control" id="admin" readonly>
+            </div>
+            <div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
+                <label for="titolo" class="form-label">Titolo</label>
+                <input type="text" th:field="*{titolo}" class="form-control" id="titolo">
+            </div>
+
+            <div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
+                <label for="descrizione" class="form-label">Descrizione</label>
+                <textarea th:field="*{descrizione}" class="form-control" id="descrizione"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="stato" class="form-label">Stato</label>
+                <select th:field="*{stato}" class="form-select">
+                    <option value="da_fare">Da fare</option>
+                    <option value="in_corso">In corso</option>
+                    <option value="completato">Completato</option>
+                </select>
+            </div>
+
+            <div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
+                <label for="dataCreazione" class="form-label">Data creazione</label>
+                <input type="date" th:field="*{dataCreazione}" class="form-control" id="dataCreazione" />
+            </div>
+
+            <div class="mb-3">
+                <label for="dataAggiornamento" class="form-label">Data aggiornamento</label>
+                <input type="date" th:field="*{dataAggiornamento}" class="form-control" id="dataAggiornamento" />
+            </div>
+
+            <div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
+                <label for="categoria" class="form-label">Categoria</label>
+                <select th:field="*{categoria.id}" class="form-select" id="categoria">
+                    <option th:each="cat : ${categorie}" th:value="${cat.id}" th:text="${cat.nome}">Categoria</option>
+                </select>
+            </div>
+
+            <div class="mb-3" sec:authorize="hasAuthority('ADMIN')">
+                <label for="operatore" class="form-label">Operatore</label>
+                <select th:field="*{operatore.id}" class="form-select" id="operatore">
+                    <option th:each="op : ${operatori}" th:value="${op.id}" th:text="${op.username}">Operatore</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salva modifiche</button>
+            <a th:href="@{/ticket}" class="btn btn-secondary">Annulla</a>
+        </form>
+    </div>
+    </div>
+    </div>
+<div th:replace="fragments/head :: bootstrapScript"></div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head">
+</head>
+<body>
+<div th:replace="fragments/topbar :: common_topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+       <div class="col-md-3 col-lg-2 px-0 bg-dark text-white vh-100" th:replace="fragments/sidebar :: common_sidebar"></div>
+        <div class="col-md-9 col-lg-10">
+    <h2>Note per il ticket: <span th:text="${ticket.titolo}"></span></h2>
+    <!-- MESSAGGI FLASH -->
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <!-- LISTA NOTE -->
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Autore</th>
+            <th>Testo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="nota : ${note}">
+            <td th:text="${nota.dataCreazione}">2025-05-20</td>
+            <td th:text="${nota.user.username}">user</td>
+            <td th:text="${nota.testo}">Testo della nota</td>
+        </tr>
+        </tbody>
+    </table>
+    <!-- FORM NUOVA NOTA -->
+    <div class="mt-4">
+        <h4>Aggiungi una nuova nota</h4>
+        <form th:action="@{'/ticket/' + ${ticket.id} + '/note'}" th:object="${nuovaNota}" method="post">
+            <div class="mb-3">
+                <label for="testo" class="form-label">Testo</label>
+                <textarea id="testo" th:field="*{testo}" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Salva Nota</button>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>
+

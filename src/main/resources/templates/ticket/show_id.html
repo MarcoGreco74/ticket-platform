@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+    <title>Spring library</title>
+</head>
+<body>
+<div th:replace="fragments/topbar :: common_topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+       <div class="col-md-3 col-lg-2 px-0 bg-dark text-white vh-100" th:replace="fragments/sidebar :: common_sidebar"></div>
+        <div class="col-md-9 col-lg-10">
+        <div th:object="${tckt}">
+
+    <!-- MODAL -->
+<div class="modal fade" th:attr="id='myModal'" tabindex="-1" th:attrappend="aria-labelledby='myModalLabel'" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" th:attr="id='myModalLabel'" th:text="${tckt.titolo}"></h1>
+        </div>
+        <div class="modal-body">
+            <p th:text="${tckt.descrizione}"></p>
+        </div>
+        <div class="modal-body">
+            <span>Data creazione</span><p th:text="${tckt.dataCreazione}"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+    </div>
+   </div>
+</div>
+<!-- fine modal-->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Titolo</th>
+                        <th>Descrizione</th>
+                        <th>Stato</th>
+                        <th>Admin</th>
+                        <th>Operatore</th>
+                        <th>Categoria</th>
+                        <th>Data creazione</th>
+                        <th>Data aggiornamento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="*{titolo}"></td>
+                        <td th:text="*{descrizione.replace('_', ' ,')}"></td>                    
+                        <td th:text="*{stato}"></td>
+                        <td th:text="*{admin.username}"></td>
+                        <td th:text="*{operatore.username}"></td>
+                        <td th:text="*{categoria.nome}"></td>
+                        <td th:text="*{dataCreazione}"></td>
+                        <td th:text="*{dataAggiornamento}"></td>                      
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+         <div class="col">   
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" th:attr="data-bs-target='#myModal'" >Vedi riepilogo</button>
+        </div>
+        <div class="col">
+            <a th:href="@{|/ticket/edit/${tckt.id}|}" class="btn btn-outline-success">Modifica stato</a>
+        </div>
+        <div class="col" sec:authorize="hasAuthority('ADMIN')">
+            <form id="delete_ticket" th:action="@{|/ticket/delete/${id}|}" method="post" >
+              <button type="submit" class="btn btn-outline-dark" th:href="@{/ticket}" onclick="return confirm('Sei sicuro?')">Cancella ticket</button>
+            </form>
+        </div>
+        <div class="col">
+            <a class="btn btn-success" th:href="@{|/note/${tckt.id}/nota|}">Crea nota</a> <!--qui-->
+        </div>
+        </div>
+</div>
+    
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+          <h3 th:text="Note"></h3>
+          <table class="table" th:if="${tckt.nota.size() > 0}">
+            <thead>
+                <tr>
+                    <th>
+                        Data creazione
+                    </th>
+                    <th>
+                        Autore
+                    </th>
+                    <th>
+                        Testo
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="nota : ${tckt.nota}">
+                    <td th:text="${nota.dataCreazione}"></td>
+                     <td th:text="${nota.user.username}"></td>
+                    <td th:text="${nota.testo}"></td>
+                </tr>
+            </tbody>
+           </table>        
+        </div>       
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+</div>
+<div th:replace="fragments/head :: bootstrapScript"></div>
+</body>
+</html>

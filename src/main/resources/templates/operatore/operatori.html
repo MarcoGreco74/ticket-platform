@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div th:replace="fragments/topbar :: common_topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+       <div class="col-md-3 col-lg-2 px-0 bg-dark text-white vh-100" th:replace="fragments/sidebar :: common_sidebar"></div>
+        <div class="col-md-9 col-lg-10">
+            <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Disponibilità</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="op : ${operatori}">
+                    <td th:text="${op.username}"></td>
+                    <td>
+                        <span th:text="${op.disponibile ? 'Disponibile' : 'Non disponibile'}"
+                            th:class="${op.disponibile} ? 'text-success' : 'text-danger'">
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+   </div>
+</div>
+<div th:replace="fragments/head :: bootstrapScript"></div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div th:replace="fragments/topbar :: common_topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+       <div class="col-md-3 col-lg-2 px-0 bg-dark text-white vh-100" th:replace="fragments/sidebar :: common_sidebar"></div>
+        <div class="col-md-9 col-lg-10">
+            <ul>
+                <li th:each="cat : ${lista}">
+                    <strong>Tickets:</strong> 
+                    <a th:href="@{'/categorie/' + ${cat.id}}"><p th:text="${cat.nome}"></p></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+  </div>  
+</body>
+</html>
